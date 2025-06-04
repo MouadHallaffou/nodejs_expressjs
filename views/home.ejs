@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1>Home Page</h1>
+    <form action="/" method="post">
+      <input type="text" name="name" placeholder="Enter your name" required />
+      <button type="submit" style="background-color: rgb(96, 151, 247);">Submit</button>
+    </form>
+
+    <h2>Submitted Names:</h2>
+    <% if (arr.length > 0) { %>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% arr.forEach(el => { %>
+        <tr>
+          <td><%= arr.indexOf(el) + 1 %></td>
+          <td><%= el.id %></td>
+          <td><%= el.name %></td>
+          <td>
+            <form action="/delete/<%= el.id %>" method="post" style="display:inline;">
+              <button type="submit" style="background-color: rgb(244, 96, 96);">Delete</button>
+            </form>
+            <form action="/edit/<%= el.id %>" method="get" style="display:inline;">
+              <button type="submit" style="background-color: rgb(124, 124, 253);">Edit</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <% } else { %>
+    <p>No names submitted yet.</p>
+    <% } %>
+  </body>
+</html>
