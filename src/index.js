@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const methodOverride = require('method-override');
-const Mydata = require('../models/myschema');
 const connectDB = require('../database/cnx');
 
 const app = express();
@@ -9,74 +8,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
 
-const PORT = process.env.PORT || 3000;
+// Servir les fichiers statiques
+app.use(express.static(path.join(__dirname, '../public')));
 
+// Utiliser le routeur principal
+const mainRouter = require('./routes/index');
+app.use('/', mainRouter);
+
+const PORT = process.env.PORT || 3000;
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);
-  });
-});
-
-
-app.get('/edit/:id', (req, res) => {
-  const id = req.params.id;
-  Mydata.findById(id).then((data) => {
-    if (!data) {
-      return res.status(404).send('Data not found');
-    }
-    Mydata.find().then((arr) => {
-      res.render('home', {
-        title: 'Edit page',
-        arr,
-        editData: data,
-        message: undefined
-      });
-    });
-  }).catch((err) => {
-    console.error('Error fetching data for edit:', err);
-    res.status(500).send('Error fetching data for edit');
-  });
-});
-
-app.put('/edit/:id', (req, res) => {
-  const id = req.params.id;
-  Mydata.findByIdAndUpdate(id, req.body, { new: true, runValidators: true })
-    .then(() => {
-      res.redirect('/?message=Data updated successfully');
-    })
-    .catch((err) => {
-      console.error('Error updating data:', err);
-      res.status(500).send('Error updating data');
-    });
-});
-
-app.get('/', (req, res) => {
-  const message = req.query.message;
-  Mydata.find().then((data) => {
-    res.render('home', { title: 'Home page', arr: data, message });
-  })
-  .catch((err) => {
-    console.error('Error fetching data:', err);
-  });
-});
-
-app.post('/', (req, res) => {
-  const myData = new Mydata(req.body);
-  myData.save().then(() => {
-    res.redirect('/?message=Data saved successfully');
-  }).catch((err) => {
-    console.error('Error saving data:', err);
-    res.status(500).send('Error saving data');
-  });
-});
-
-app.delete('/delete/:id', (req, res) => {
-  const id = req.params.id;
-  Mydata.findByIdAndDelete(id).then(() => {
-    res.redirect('/?message=Data deleted successfully');
-  })
-  .catch((err) => {
-    console.error('Error deleting data:', err);
-    res.status(500).send('Error deleting data');
   });
 });
