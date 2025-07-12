@@ -43,7 +43,7 @@
           <td><%= el.name %></td>
           <td>
             <form action="/delete/<%= el._id %>?_method=DELETE" method="post" style="display:inline;">
-              <button type="submit" style="background-color: rgb(244, 96, 96);">Delete</button>
+              <button type="submit" style="background-color: rgb(244, 96, 96);" onclick="return confirm('are you sure!')">Delete</button>
             </form>
             <form action="/edit/<%= el._id %>" method="get" style="display:inline;">
               <button type="submit" style="background-color: rgb(124, 124, 253);">Edit</button>

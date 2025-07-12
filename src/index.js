@@ -1,25 +1,21 @@
-const express = require('express')
-const path = require('path') 
-const app = express()
-const port = 3000
-require('dotenv').config();
-const mongoose = require('mongoose');
+const express = require('express');
+const path = require('path');
+const methodOverride = require('method-override');
 const Mydata = require('../models/myschema');
+const connectDB = require('../database/cnx');
+
+const app = express();
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
 
-var methodOverride = require('method-override')
-app.use(methodOverride('_method'))
+const PORT = process.env.PORT || 3000;
 
-
-mongoose.connect(process.env.MONGO_URI).then(() => {
-  app.listen(port, () => {
-    console.log(`http://localhost:${port}/`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Serveur démarré sur http://localhost:${PORT}`);
   });
- })
- .catch((err) => {
-   console.log(err);
- });
+});
 
 
 app.get('/edit/:id', (req, res) => {
