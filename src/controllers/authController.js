@@ -40,7 +40,7 @@ exports.postLogin = async (req, res) => {
     if (!isMatch) {
       return res.render('login', { message: 'Email ou mot de passe incorrect.' });
     }
-    req.session.user = { id: user._id, username: user.username, email: user.email };
+    req.session.user = { id: user._id, username: user.username, email: user.email, role: user.role };
     res.redirect('/dashboard');
   } catch (err) {
     console.error(err);
