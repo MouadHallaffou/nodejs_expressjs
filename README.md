@@ -1,34 +1,28 @@
-# Node.js Express MongoDB - Starter Project
+# Node.js Express MongoDB - Projet de Démarrage
 
 ---
 
-## 🇫🇷 Présentation
+## Présentation
 Ce projet est une base professionnelle pour une application Node.js utilisant Express, MongoDB (Mongoose), EJS, gestion des rôles (admin/user), interface d'administration, et stylisation moderne. Il respecte la structure MVC et les meilleures pratiques de sécurité et de maintenabilité.
 
-## 🇬🇧 Overview
-This project is a professional starter for a Node.js app using Express, MongoDB (Mongoose), EJS, role management (admin/user), admin interface, and modern styling. It follows the MVC structure and best practices for security and maintainability.
+---
+
+## Table des matières
+- [Node.js Express MongoDB - Projet de Démarrage](#nodejs-express-mongodb---projet-de-démarrage)
+  - [Présentation](#présentation)
+  - [Table des matières](#table-des-matières)
+  - [🛠️ Fonctionnalités](#️-fonctionnalités)
+  - [🗂️ Structure du projet](#️-structure-du-projet)
+  - [🚀 Installation & Démarrage](#-installation--démarrage)
+  - [🔐 Authentification & Administration](#-authentification--administration)
+  - [🏆 Bonnes pratiques](#-bonnes-pratiques)
+  - [💡 Exemples d'utilisation](#-exemples-dutilisation)
+  - [📚 Ressources utiles](#-ressources-utiles)
+  - [👨‍💻 Auteurs](#-auteurs)
 
 ---
 
-## 🇫🇷 Table des matières / 🇬🇧 Table of Contents
-- [Node.js Express MongoDB - Starter Project](#nodejs-express-mongodb---starter-project)
-  - [🇫🇷 Présentation](#-présentation)
-  - [🇬🇧 Overview](#-overview)
-  - [🇫🇷 Table des matières / 🇬🇧 Table of Contents](#-table-des-matières---table-of-contents)
-  - [🛠️ Fonctionnalités / Features](#️-fonctionnalités--features)
-  - [🗂️ Structure du projet / Project Structure](#️-structure-du-projet--project-structure)
-  - [🚀 Installation \& Démarrage / Installation \& Start](#-installation--démarrage--installation--start)
-    - [🇫🇷 Instructions](#-instructions)
-    - [🇬🇧 Instructions](#-instructions-1)
-  - [🔐 Authentification \& Administration / Auth \& Admin](#-authentification--administration--auth--admin)
-  - [🏆 Bonnes pratiques / Best Practices](#-bonnes-pratiques--best-practices)
-  - [💡 Exemples d'utilisation / Usage Examples](#-exemples-dutilisation--usage-examples)
-  - [📚 Ressources utiles / Useful Resources](#-ressources-utiles--useful-resources)
-  - [👨‍💻 Auteurs / Authors](#-auteurs--authors)
-
----
-
-## 🛠️ Fonctionnalités / Features
+## 🛠️ Fonctionnalités
 - Authentification utilisateur (inscription, connexion, déconnexion)
 - Gestion des rôles (utilisateur/admin)
 - Interface d'administration sécurisée
@@ -40,7 +34,7 @@ This project is a professional starter for a Node.js app using Express, MongoDB 
 
 ---
 
-## 🗂️ Structure du projet / Project Structure
+## 🗂️ Structure du projet
 
 ```text
 nodejs-exp/
@@ -73,13 +67,12 @@ nodejs-exp/
 
 ---
 
-## 🚀 Installation & Démarrage / Installation & Start
+## 🚀 Installation & Démarrage
 
-### 🇫🇷 Instructions
 1. Cloner le dépôt :
    ```bash
-   git clone <url-du-repo>
-   cd nodejs-exp
+   git clone https://github.com/MouadHallaffou/nodejs_expressjs.git
+   cd nodejs_expressjs
    ```
 2. Installer les dépendances :
    ```bash
@@ -88,7 +81,7 @@ nodejs-exp/
 3. Configurer l'environnement :
    - Créer un fichier `.env` avec :
      ```env
-     MONGO_URI=mongodb://localhost:27017/nom_de_ta_db
+     MONGO_URI=mongodb://localhost:27017/
      SESSION_SECRET=un_secret_pour_la_session
      ```
 4. Lancer le serveur :
@@ -97,35 +90,11 @@ nodejs-exp/
    # ou
    npm run dev
    ```
-5. Accéder à l'application : [http://localhost:3000](http://localhost:3000)
-
-### 🇬🇧 Instructions
-1. Clone the repo:
-   ```bash
-   git clone <repo-url>
-   cd nodejs-exp
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Configure environment:
-   - Create a `.env` file with:
-     ```env
-     MONGO_URI=mongodb://localhost:27017/your_db_name
-     SESSION_SECRET=your_session_secret
-     ```
-4. Start the server:
-   ```bash
-   npm start
-   # or
-   npm run dev
-   ```
-5. Open [http://localhost:3000](http://localhost:3000)
+5. Accéder à l'application : [http://localhost:3000/login](http://localhost:3000/login)
 
 ---
 
-## 🔐 Authentification & Administration / Auth & Admin
+## 🔐 Authentification & Administration
 
 - Inscription et connexion sécurisées (bcrypt, session)
 - Rôle utilisateur/admin stocké en base et en session
@@ -136,7 +105,7 @@ nodejs-exp/
 
 ---
 
-## 🏆 Bonnes pratiques / Best Practices
+## 🏆 Bonnes pratiques
 - Structure MVC stricte (models, views, controllers, routes)
 - Un fichier = une entité (User, Category, etc.)
 - Séparation logique métier / routes / vues
@@ -149,7 +118,7 @@ nodejs-exp/
 
 ---
 
-## 💡 Exemples d'utilisation / Usage Examples
+## 💡 Exemples d'utilisation
 
 - **Créer un utilisateur admin** :
   - Inscris-toi puis modifie le champ `role` de ton utilisateur dans la base (`admin`)
@@ -162,7 +131,7 @@ nodejs-exp/
 
 ---
 
-## 📚 Ressources utiles / Useful Resources
+## 📚 Ressources utiles
 - [Node.js Docs](https://nodejs.org/en/docs/)
 - [Express Docs](https://expressjs.com/)
 - [MongoDB University](https://university.mongodb.com/)
@@ -172,9 +141,9 @@ nodejs-exp/
 
 ---
 
-## 👨‍💻 Auteurs / Authors
+## 👨‍💻 Auteurs
 - Projet réalisé par [Ton Nom] dans le cadre d'un apprentissage Node.js/Express/MongoDB.
 
 ---
 
-**Bon apprentissage et bon code ! / Happy coding!**
+**Bon apprentissage et bon code !**
