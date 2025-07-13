@@ -21,6 +21,21 @@ app.use(session({
   cookie: { secure: false, maxAge: 1000 * 60 * 60 }
 }));
 
+app.use(flash());
+
+// Rendre les messages flash accessibles dans toutes les vues EJS (AVANT les routeurs)
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  next();
+});
+
+//use crsf token
+app.use((req, res, next) => {
+  res.locals.csrfToken = req.csrfToken ? req.csrfToken() : '';
+  next();
+});
+
 // Utiliser les routeurs
 const mainRouter = require('./routes/categories');
 app.use('/', mainRouter);
@@ -28,13 +43,6 @@ const authRouter = require('./routes/auth');
 app.use('/', authRouter);
 const adminRouter = require('./routes/admin');
 app.use('/', adminRouter);
-
-// Rendre les messages flash accessibles dans toutes les vues EJS
-app.use((req, res, next) => {
-  res.locals.success = req.flash('success');
-  res.locals.error = req.flash('error');
-  next();
-});
 
 const PORT = process.env.PORT || 3000;
 connectDB().then(() => {

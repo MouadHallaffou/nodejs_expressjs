@@ -1,14 +1,15 @@
-<%- include('partials/header') %>
+<%- include('./partials/header.ejs') %>
 
 <% if (success && success.length) { %>
   <div style="color: green;"><%= success[0] %></div>
 <% } %>
 <% if (error && error.length) { %>
   <div style="color: red;"><%= error[0] %></div>
-<% } %>
+<% } %> 
 
 <h2>Interface d'administration</h2>
-<p>Bienvenue, <%= admin.username %> (admin)</p>
+<p>Bienvenue, <%= admin && admin.username ? admin.username : 'Admin' %> (admin)</p>
+<a href="logout">logout</a>
 
 <table border="1">
   <thead>
@@ -25,21 +26,28 @@
         <td><%= user.username %></td>
         <td><%= user.email %></td>
         <td>
-          <form action="/admin/user/<%= user._id %>/role" method="post" style="display:inline;">
-            <select name="role" onchange="this.form.submit()">
-              <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>user</option>
-              <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>admin</option>
-            </select>
-          </form>
+          <% if (user.role) { %>
+            <form action="/admin/user/<%= user._id %>/role" method="post" style="display:inline;">
+              <select name="role" onchange="this.form.submit()">
+                <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>user</option>
+                <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>admin</option>
+              </select>
+            </form>
+          <% } else { %>
+            (rôle inconnu)
+          <% } %>
         </td>
         <td>
-          <% if (user._id.toString() !== admin.id.toString()) { %>
+          <% if (admin && admin.id && user._id && user._id.toString() !== admin.id.toString()) { %>
             <form action="/admin/user/<%= user._id %>/delete" method="post" style="display:inline;">
               <button type="submit" onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</button>
             </form>
           <% } else { %>
             (vous)
           <% } %>
+          <form action="/admin/user/<%= user._id %>/edit" method="get" style="display:inline;">
+            <button type="submit">Modifier</button>
+          </form>
         </td>
       </tr>
     <% }) %>

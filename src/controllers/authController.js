@@ -41,7 +41,11 @@ exports.postLogin = async (req, res) => {
       return res.render('login', { message: 'Email ou mot de passe incorrect.' });
     }
     req.session.user = { id: user._id, username: user.username, email: user.email, role: user.role };
-    res.redirect('/dashboard');
+    if (user.role === 'admin') {
+      res.redirect('/admin');
+    } else {
+      res.redirect('/dashboard');
+    }
   } catch (err) {
     console.error(err);
     res.render('login', { message: 'Erreur lors de la connexion.' });
