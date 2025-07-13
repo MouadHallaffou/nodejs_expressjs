@@ -1,73 +1,70 @@
-# Node.js, JavaScript & MongoDB – Plan d'Apprentissage
-
-## 🚀 Introduction
-Ce projet a pour but de t'aider à apprendre Node.js, JavaScript et MongoDB à travers des étapes progressives et des bonnes pratiques professionnelles.
+# Node.js Express MongoDB - Starter Project
 
 ---
 
-## 🛠️ Prérequis
-- Node.js (v14+ recommandé)
-- npm
-- MongoDB (local ou Atlas)
-- Git
-- EJS (installé via npm)
+## 🇫🇷 Présentation
+Ce projet est une base professionnelle pour une application Node.js utilisant Express, MongoDB (Mongoose), EJS, gestion des rôles (admin/user), interface d'administration, et stylisation moderne. Il respecte la structure MVC et les meilleures pratiques de sécurité et de maintenabilité.
+
+## 🇬🇧 Overview
+This project is a professional starter for a Node.js app using Express, MongoDB (Mongoose), EJS, role management (admin/user), admin interface, and modern styling. It follows the MVC structure and best practices for security and maintainability.
 
 ---
 
-## ⚡ Installation
-1. Cloner le dépôt :
-   ```bash
-   git clone <url-du-repo>
-   cd <nom-du-dossier>
-   ```
-2. Installer les dépendances :
-   ```bash
-   npm install
-   ```
-3. Configurer l'environnement :
-   - Créer un fichier `.env` avec la chaîne de connexion MongoDB
+## 🇫🇷 Table des matières / 🇬🇧 Table of Contents
+- [Node.js Express MongoDB - Starter Project](#nodejs-express-mongodb---starter-project)
+  - [🇫🇷 Présentation](#-présentation)
+  - [🇬🇧 Overview](#-overview)
+  - [🇫🇷 Table des matières / 🇬🇧 Table of Contents](#-table-des-matières---table-of-contents)
+  - [🛠️ Fonctionnalités / Features](#️-fonctionnalités--features)
+  - [🗂️ Structure du projet / Project Structure](#️-structure-du-projet--project-structure)
+  - [🚀 Installation \& Démarrage / Installation \& Start](#-installation--démarrage--installation--start)
+    - [🇫🇷 Instructions](#-instructions)
+    - [🇬🇧 Instructions](#-instructions-1)
+  - [🔐 Authentification \& Administration / Auth \& Admin](#-authentification--administration--auth--admin)
+  - [🏆 Bonnes pratiques / Best Practices](#-bonnes-pratiques--best-practices)
+  - [💡 Exemples d'utilisation / Usage Examples](#-exemples-dutilisation--usage-examples)
+  - [📚 Ressources utiles / Useful Resources](#-ressources-utiles--useful-resources)
+  - [👨‍💻 Auteurs / Authors](#-auteurs--authors)
 
 ---
 
-## ▶️ Démarrage
-- Lancer le serveur :
-  ```bash
-  node src/index.js
-  # ou, si nodemon est installé
-  nodemon src/index.js
-  ```
-- Accéder à l'application sur [http://localhost:3000](http://localhost:3000)
+## 🛠️ Fonctionnalités / Features
+- Authentification utilisateur (inscription, connexion, déconnexion)
+- Gestion des rôles (utilisateur/admin)
+- Interface d'administration sécurisée
+- CRUD sur les catégories (exemple)
+- Stylisation responsive et moderne (CSS)
+- Messages flash (succès/erreur)
+- Sécurité : hashage des mots de passe, sessions, .env
+- Structure MVC claire et évolutive
 
 ---
 
-## 🗂️ Structure professionnelle du projet
+## 🗂️ Structure du projet / Project Structure
 
 ```text
 nodejs-exp/
 │
-├── models/
-│   ├── user.js         # Schéma User (exemple)
-│   ├── product.js      # Schéma Product (exemple)
-│   └── myschema.js     # Schéma principal actuel
-│
-├── database/
-│   └── cnx.js          # Connexion MongoDB
-│
 ├── src/
-│   ├── index.js        # Point d’entrée principal
-│   ├── controllers/
-│   │   └── homeController.js
-│   └── routes/
-│       └── index.js
+│   ├── controllers/      # Logique métier (auth, admin, catégories)
+│   ├── middleware/        # Middlewares personnalisés (auth, rôle)
+│   ├── models/            # Schémas Mongoose (User, Category)
+│   ├── routes/            # Définition des routes Express
+│   ├── database/          # Connexion MongoDB
+│   └── index.js           # Point d'entrée principal
 │
 ├── views/
-│   ├── home.ejs
-│   └── partials/
-│       ├── header.ejs
-│       └── footer.ejs
+│   ├── partials/          # Header, footer, navbar
+│   ├── admin.ejs          # Interface admin
+│   ├── dashboard.ejs      # Dashboard utilisateur
+│   ├── login.ejs          # Connexion
+│   ├── register.ejs       # Inscription
+│   └── categories/        # Vues catégories
 │
-├── public/             # Fichiers statiques (CSS, images, JS client)
+├── public/
+│   └── styles.css         # Style global
 │
+├── .env                   # Variables d'environnement (non versionné)
 ├── .gitignore
 ├── package.json
 ├── package-lock.json
@@ -76,89 +73,108 @@ nodejs-exp/
 
 ---
 
-## 🧠 Organisation des modèles (Best Practice)
+## 🚀 Installation & Démarrage / Installation & Start
 
-- **Un fichier = un schéma = une entité**
-- Exemple :
-  ```js
-  // models/user.js
-  const mongoose = require('mongoose');
-  const userSchema = new mongoose.Schema({
-    username: { type: String, required: true },
-    email:    { type: String, required: true, unique: true },
-    password: { type: String, required: true }
-  });
-  module.exports = mongoose.model('User', userSchema);
-  ```
-- Importation dans un contrôleur :
-  ```js
-  const User = require('../../models/user');
-  ```
-- **Ne jamais tout regrouper dans un seul fichier** : cela nuit à la lisibilité et à la maintenabilité.
+### 🇫🇷 Instructions
+1. Cloner le dépôt :
+   ```bash
+   git clone <url-du-repo>
+   cd nodejs-exp
+   ```
+2. Installer les dépendances :
+   ```bash
+   npm install
+   ```
+3. Configurer l'environnement :
+   - Créer un fichier `.env` avec :
+     ```env
+     MONGO_URI=mongodb://localhost:27017/nom_de_ta_db
+     SESSION_SECRET=un_secret_pour_la_session
+     ```
+4. Lancer le serveur :
+   ```bash
+   npm start
+   # ou
+   npm run dev
+   ```
+5. Accéder à l'application : [http://localhost:3000](http://localhost:3000)
 
----
-
-## 📝 Étapes d'apprentissage
-
-### 1. Node.js & Express
-- Créer un serveur Express
-- Gérer les routes (GET, POST)
-- Installer et configurer EJS comme moteur de templates
-- Créer des vues dynamiques avec EJS (ex : page d’accueil, liste d’utilisateurs)
-- Servir des fichiers statiques
-
-### 2. JavaScript côté serveur
-- Manipuler les objets, tableaux, fonctions asynchrones (async/await)
-- Utiliser les modules (import/export)
-
-### 3. MongoDB & Mongoose
-- Connecter l'app à MongoDB
-- Créer des modèles (schemas)
-- Effectuer les opérations CRUD (Create, Read, Update, Delete)
-- Valider les données
-
-### 4. Fonctionnalités avancées
-- Authentification (sessions, JWT)
-- Gestion des erreurs
-- Déploiement (Render, Heroku, etc.)
-
----
-
-## 🏆 Best Practices professionnelles
-- **Respecter la structure MVC** (Models, Views, Controllers, Routes)
-- **Un fichier = un schéma = une entité** dans `models/`
-- **Séparer la logique métier des routes** (controllers/ vs routes/)
-- **Utiliser .gitignore** pour exclure `node_modules`, `.env`, etc.
-- **Valider les entrées utilisateur** côté serveur (Mongoose, express-validator...)
-- **Gérer les erreurs proprement** (try/catch, middlewares d'erreur)
-- **Ne jamais stocker de mots de passe en clair** (utiliser bcrypt)
-- **Utiliser des partials EJS** pour factoriser le HTML (header, footer, etc.)
-- **Servir les fichiers statiques** via le dossier `public/`
-- **Documenter le code** (commentaires, README)
-- **Utiliser des variables d'environnement** pour les secrets et la config
-- **Organiser les vues EJS dans un dossier `views/`**
-- **Garder la logique métier hors des templates**
+### 🇬🇧 Instructions
+1. Clone the repo:
+   ```bash
+   git clone <repo-url>
+   cd nodejs-exp
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Configure environment:
+   - Create a `.env` file with:
+     ```env
+     MONGO_URI=mongodb://localhost:27017/your_db_name
+     SESSION_SECRET=your_session_secret
+     ```
+4. Start the server:
+   ```bash
+   npm start
+   # or
+   npm run dev
+   ```
+5. Open [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 🔎 Concepts & Méthodes à approfondir
-- Asynchrone en JS (callbacks, promises, async/await)
-- Middlewares Express
-- Modèles Mongoose & validation
-- Sécurité (hashing, validation, CORS)
-- Environnements (variables d'env, .env)
-- Déploiement d'une app Node.js
+## 🔐 Authentification & Administration / Auth & Admin
+
+- Inscription et connexion sécurisées (bcrypt, session)
+- Rôle utilisateur/admin stocké en base et en session
+- Interface `/admin` réservée aux admins (gestion utilisateurs, rôles)
+- Dashboard utilisateur `/dashboard`
+- Middleware de protection des routes (`requireAdmin`, `requireAuth`)
+- Messages flash pour feedback utilisateur
 
 ---
 
-## 📚 Ressources utiles
+## 🏆 Bonnes pratiques / Best Practices
+- Structure MVC stricte (models, views, controllers, routes)
+- Un fichier = une entité (User, Category, etc.)
+- Séparation logique métier / routes / vues
+- Utilisation de partials EJS (header, footer, navbar)
+- Variables d'environnement pour la config sensible
+- Validation des entrées côté serveur
+- Gestion centralisée des erreurs
+- Code commenté et documenté
+- CSS responsive et moderne
+
+---
+
+## 💡 Exemples d'utilisation / Usage Examples
+
+- **Créer un utilisateur admin** :
+  - Inscris-toi puis modifie le champ `role` de ton utilisateur dans la base (`admin`)
+- **Ajouter une catégorie** :
+  - Utilise le formulaire sur `/categories`
+- **Changer le rôle d'un utilisateur** :
+  - Depuis l'interface admin, utilise le menu déroulant
+- **Supprimer un utilisateur** :
+  - Depuis l'interface admin, clique sur "Supprimer"
+
+---
+
+## 📚 Ressources utiles / Useful Resources
 - [Node.js Docs](https://nodejs.org/en/docs/)
 - [Express Docs](https://expressjs.com/)
 - [MongoDB University](https://university.mongodb.com/)
 - [Mongoose Docs](https://mongoosejs.com/docs/)
-- [MDN JavaScript](https://developer.mozilla.org/fr/docs/Web/JavaScript)
 - [EJS Docs](https://ejs.co/)
+- [MDN JavaScript](https://developer.mozilla.org/fr/docs/Web/JavaScript)
 
 ---
 
-**Bon apprentissage et code propre !**
+## 👨‍💻 Auteurs / Authors
+- Projet réalisé par [Ton Nom] dans le cadre d'un apprentissage Node.js/Express/MongoDB.
+
+---
+
+**Bon apprentissage et bon code ! / Happy coding!**

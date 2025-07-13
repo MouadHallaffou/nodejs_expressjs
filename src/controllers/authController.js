@@ -1,3 +1,4 @@
+// Contrôleur d'authentification : gère l'inscription, la connexion, la déconnexion et le dashboard utilisateur
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
@@ -6,14 +7,16 @@ exports.getRegister = (req, res) => {
   res.render('register', { message: undefined });
 };
 
-// Traite l'inscription
+// Traite l'inscription d'un nouvel utilisateur
 exports.postRegister = async (req, res) => {
   const { username, email, password } = req.body;
   try {
+    // Vérifie si l'email existe déjà
     const existing = await User.findOne({ email });
     if (existing) {
       return res.render('register', { message: 'Email déjà utilisé.' });
     }
+    // Crée et sauvegarde le nouvel utilisateur
     const user = new User({ username, email, password });
     await user.save();
     res.redirect('/login');
@@ -28,19 +31,23 @@ exports.getLogin = (req, res) => {
   res.render('login', { message: undefined });
 };
 
-// Traite la connexion
+// Traite la connexion utilisateur
 exports.postLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
+    // Recherche l'utilisateur par email
     const user = await User.findOne({ email });
     if (!user) {
       return res.render('login', { message: 'Email ou mot de passe incorrect.' });
     }
+    // Vérifie le mot de passe
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.render('login', { message: 'Email ou mot de passe incorrect.' });
     }
+    // Stocke les infos utiles en session
     req.session.user = { id: user._id, username: user.username, email: user.email, role: user.role };
+    // Redirige selon le rôle
     if (user.role === 'admin') {
       res.redirect('/admin');
     } else {
@@ -52,14 +59,14 @@ exports.postLogin = async (req, res) => {
   }
 };
 
-// Déconnexion
+// Déconnexion utilisateur
 exports.logout = (req, res) => {
   req.session.destroy(() => {
     res.redirect('/login');
   });
 };
 
-// Dashboard protégé
+// Dashboard protégé (utilisateur connecté)
 exports.getDashboard = (req, res) => {
   if (!req.session || !req.session.user) {
     return res.redirect('/login');

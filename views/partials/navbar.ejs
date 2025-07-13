@@ -1,0 +1,13 @@
+<nav>
+  <a href="/dashboard">Dashboard</a>
+  <a href="/categories">Catégories</a>
+  <% if (user && user.role === 'admin') { %>
+    <a href="/admin">Admin</a>
+  <% } %>
+  <% if (user) { %>
+    <a href="/logout">Déconnexion</a>
+  <% } else { %>
+    <a href="/login">Connexion</a>
+    <a href="/register">Inscription</a>
+  <% } %>
+</nav> 

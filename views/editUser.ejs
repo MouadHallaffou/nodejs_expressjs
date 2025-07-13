@@ -9,8 +9,8 @@
 <h2>Modifier l'utilisateur</h2>
 <p>Bienvenue, <%= admin && admin.username ? admin.username : 'Admin' %></p>
     <form action="/admin/user/<%= user._id %>/edit" method="post" style="max-width: 400px;">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input type="hidden" name="_id" value="<%= user._id %>">
-        <input type="hidden" name="csrfToken" value="<%= csrfToken %>">
         <label for="username">Nom d'utilisateur :</label>
         <input type="text" id="username" name="username" value="<%= user.username %>" required><br>
         <label for="email">Email :</label>

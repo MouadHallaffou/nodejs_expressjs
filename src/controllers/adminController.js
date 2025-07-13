@@ -1,13 +1,13 @@
-const user = require('../models/user');
+// Contrôleur d'administration : gère la gestion des utilisateurs (listing, suppression, édition, changement de rôle)
 const User = require('../models/user');
 
-// Affiche la liste de tous les utilisateurs
+// Affiche la liste de tous les utilisateurs dans l'interface admin
 exports.dashboard = async (req, res) => {
   const users = await User.find();
   res.render('admin', { users, admin: req.session.user });
 };
 
-// Supprime un utilisateur
+// Supprime un utilisateur par son ID
 exports.deleteUser = async (req, res) => {
   await User.findByIdAndDelete(req.params.id);
   req.flash('success', 'Utilisateur supprimé avec succès.');
@@ -28,7 +28,6 @@ exports.editUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   const { username, email } = req.body;
   const user = await User.findById(req.params.id);
-  
   if (!user) {
     req.flash('error', 'Utilisateur non trouvé.');
     return res.redirect('/admin');
@@ -36,7 +35,6 @@ exports.updateUser = async (req, res) => {
   user.username = username;
   user.email = email;
   await user.save();
-
   req.flash('success', 'Informations de l\'utilisateur mises à jour.');
   res.redirect('/admin');
 }
@@ -44,10 +42,10 @@ exports.updateUser = async (req, res) => {
 // Change le rôle d’un utilisateur
 exports.changeRole = async (req, res) => {
   const { role } = req.body;
-  await User.findByIdAndUpdate(req.params.id, { role });
+  const user = await User.findByIdAndUpdate(req.params.id, { role }, { new: true });
   req.flash('success', "Rôle de l'utilisateur mis à jour.");
   if (user.role === 'admin') {
-  res.redirect('/admin')
+    res.redirect('/admin')
   } else {
     res.redirect('/dashboard');
   }

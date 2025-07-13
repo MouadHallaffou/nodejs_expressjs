@@ -1,11 +1,11 @@
 <%- include('./partials/header.ejs') %>
 
-<% if (success && success.length) { %>
+<% if (typeof success !== 'undefined' && success.length) { %>
   <div style="color: green;"><%= success[0] %></div>
 <% } %>
-<% if (error && error.length) { %>
+<% if (typeof error !== 'undefined' && error.length) { %>
   <div style="color: red;"><%= error[0] %></div>
-<% } %> 
+<% } %>
 
 <h2>Interface d'administration</h2>
 <p>Bienvenue, <%= admin && admin.username ? admin.username : 'Admin' %> (admin)</p>
@@ -28,6 +28,7 @@
         <td>
           <% if (user.role) { %>
             <form action="/admin/user/<%= user._id %>/role" method="post" style="display:inline;">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <select name="role" onchange="this.form.submit()">
                 <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>user</option>
                 <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>admin</option>
@@ -40,6 +41,7 @@
         <td>
           <% if (admin && admin.id && user._id && user._id.toString() !== admin.id.toString()) { %>
             <form action="/admin/user/<%= user._id %>/delete" method="post" style="display:inline;">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <button type="submit" onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</button>
             </form>
           <% } else { %>

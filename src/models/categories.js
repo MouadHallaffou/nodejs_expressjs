@@ -1,3 +1,4 @@
+// Schéma Mongoose pour les catégories (Category)
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -14,9 +15,9 @@ const categories = new Schema({
     unique: true,
     trim: true
   }
-  
 });
 
+// Génère automatiquement le slug à partir du nom si absent ou modifié
 categories.pre('save', function(next) {
   if (this.name && (!this.slug || this.isModified('name'))) {
     this.slug = this.name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
@@ -24,5 +25,4 @@ categories.pre('save', function(next) {
   next();
 });
 
-const categorys = mongoose.model('categorys', categories);
-module.exports = categorys;
+module.exports = mongoose.model('Category', categories);

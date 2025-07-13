@@ -1,65 +1,59 @@
-import categories from '../models/categories.js';
+// Contrôleur des catégories : gère le CRUD des catégories
+const Category = require('../models/categories');
 
-export const getCategories = (req, res) => {
-  const message = req.query.message;
-  categories.find().then((data) => {
-    res.render('categories/categories', { title: 'Categories page', categories: data, message });
-  })
-  .catch((err) => {
-    console.error('Error fetching data:', err);
-    res.status(500).send('Error fetching data');
-  });
+// Liste toutes les catégories
+exports.listCategories = async (req, res) => {
+  const categories = await Category.find();
+  res.render('categories/categories', { categories });
 };
 
-export const postCategories = (req, res) => {
-  const category = new categories(req.body);
-  category.save().then(() => {
-    res.redirect('/categories/?message=Data saved successfully');
-  }).catch((err) => {
-    console.error('Error saving data:', err);
-    res.status(500).send('Error saving data');
-  });
+// Affiche le formulaire d'ajout d'une catégorie
+exports.newCategoryForm = (req, res) => {
+  res.render('categories/newCategory');
 };
 
-export const getEdit = (req, res) => {
-  const id = req.params.id;
-  categories.findById(id).then((data) => {
-    if (!data) {
-      return res.status(404).send('Data not found');
-    }
-    categories.find().then((categories) => {
-      res.render('categories/categories', {
-        title: 'Edit page',
-        categories,
-        editData: data
-      });
-    });
-  }).catch((err) => {
-    console.error('Error fetching data for edit:', err);
-    res.status(500).send('Error fetching data for edit');
-  });
+// Crée une nouvelle catégorie
+exports.createCategory = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const category = new Category({ name });
+    await category.save();
+    res.redirect('/categories');
+  } catch (err) {
+    res.status(500).send('Erreur lors de la création de la catégorie');
+  }
 };
 
-export const putEdit = (req, res) => {
-  const id = req.params.id;
-  categories
-    .findByIdAndUpdate(id, req.body, { new: true, runValidators: true }) // { new: true } returns the updated document; { runValidators: true } ensures schema validation during update
-    .then(() => {
-      res.redirect('/categories/?message=Data updated successfully');
-    })
-    .catch((err) => {
-      console.error('Error updating data:', err);
-      res.status(500).send('Error updating data');
-    });
+// Affiche le formulaire d'édition d'une catégorie
+exports.editCategoryForm = async (req, res) => {
+  const category = await Category.findById(req.params.id);
+  if (!category) return res.redirect('/categories');
+  const categories = await Category.find();
+  res.render('categories/categories', { categories, editData: category });
 };
 
-export const deleteData = (req, res) => {
-  const id = req.params.id;
-  categories.findByIdAndDelete(id).then(() => {
-    res.redirect('/categories/?message=Data deleted successfully');
-  })
-  .catch((err) => {
-    console.error('Error deleting data:', err);
-    res.status(500).send('Error deleting data');
-  });
-}
+// Met à jour une catégorie
+exports.updateCategory = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const category = await Category.findById(req.params.id);
+    if (!category) return res.redirect('/categories');
+    
+    category.name = name;
+    await category.save(); // Ceci déclenchera le middleware pre('save') pour regénérer le slug
+    
+    res.redirect('/categories');
+  } catch (err) {
+    res.status(500).send('Erreur lors de la mise à jour de la catégorie');
+  }
+};
+
+// Supprime une catégorie
+exports.deleteCategory = async (req, res) => {
+  try {
+    await Category.findByIdAndDelete(req.params.id);
+    res.redirect('/categories');
+  } catch (err) {
+    res.status(500).send('Erreur lors de la suppression de la catégorie');
+  }
+};
