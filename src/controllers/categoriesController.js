@@ -1,9 +1,9 @@
-import categories from '../../models/categories.js';
+import categories from '../models/categories.js';
 
 export const getCategories = (req, res) => {
   const message = req.query.message;
   categories.find().then((data) => {
-    res.render('categories', { title: 'Categories page', categories: data, message });
+    res.render('categories/categories', { title: 'Categories page', categories: data, message });
   })
   .catch((err) => {
     console.error('Error fetching data:', err);
@@ -14,7 +14,7 @@ export const getCategories = (req, res) => {
 export const postCategories = (req, res) => {
   const category = new categories(req.body);
   category.save().then(() => {
-    res.redirect('/?message=Data saved successfully');
+    res.redirect('/categories/?message=Data saved successfully');
   }).catch((err) => {
     console.error('Error saving data:', err);
     res.status(500).send('Error saving data');
@@ -28,7 +28,7 @@ export const getEdit = (req, res) => {
       return res.status(404).send('Data not found');
     }
     categories.find().then((categories) => {
-      res.render('categories', {
+      res.render('categories/categories', {
         title: 'Edit page',
         categories,
         editData: data
@@ -45,7 +45,7 @@ export const putEdit = (req, res) => {
   categories
     .findByIdAndUpdate(id, req.body, { new: true, runValidators: true }) // { new: true } returns the updated document; { runValidators: true } ensures schema validation during update
     .then(() => {
-      res.redirect('/?message=Data updated successfully');
+      res.redirect('/categories/?message=Data updated successfully');
     })
     .catch((err) => {
       console.error('Error updating data:', err);
@@ -56,7 +56,7 @@ export const putEdit = (req, res) => {
 export const deleteData = (req, res) => {
   const id = req.params.id;
   categories.findByIdAndDelete(id).then(() => {
-    res.redirect('/?message=Data deleted successfully');
+    res.redirect('/categories/?message=Data deleted successfully');
   })
   .catch((err) => {
     console.error('Error deleting data:', err);
